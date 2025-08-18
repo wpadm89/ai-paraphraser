@@ -117,37 +117,52 @@
   </footer>
 
   <script>
-    async function paraphraseText() {
-      const input = document.getElementById("inputText").value;
-      if (!input.trim()) {
-        alert("Please enter some text.");
-        return;
-      }
-      document.getElementById("outputText").value = "⏳ Paraphrasing...";
-      const response = await fetch("https://api-inference.huggingface.co/models/Vamsi/T5_Paraphrase_Paws", {
-        method: "POST",
-        headers: { "Authorization": "Bearer YOUR_HUGGINGFACE_API_KEY" },
-        body: JSON.stringify({ inputs: input })
-      });
-      const data = await response.json();
-      document.getElementById("outputText").value = data[0]?.generated_text || "Error: Unable to paraphrase.";
+  async function processText(mode) {
+    const input = document.getElementById("inputText").value;
+    const outputBox = document.getElementById("outputText");
+    if (!input.trim()) {
+      alert("Please enter some text.");
+      return;
     }
 
-    async function summarizeText() {
-      const input = document.getElementById("inputText").value;
-      if (!input.trim()) {
-        alert("Please enter some text.");
-        return;
-      }
-      document.getElementById("outputText").value = "⏳ Summarizing...";
-      const response = await fetch("https://api-inference.huggingface.co/models/facebook/bart-large-cnn", {
-        method: "POST",
-        headers: { "Authorization": "Bearer YOUR_HUGGINGFACE_API_KEY" },
-        body: JSON.stringify({ inputs: input })
-      });
-      const data = await response.json();
-      document.getElementById("outputText").value = data[0]?.summary_text || "Error: Unable to summarize.";
+    outputBox.value = mode === "paraphrase" ? "⏳ Paraphrasing..." : "⏳ Summarizing...";
+
+    const response = await fetch("/api/ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: input, mode }),
+    });
+
+    if (!response.body) {
+      outputBox.value = "⚠️ No response received!";
+      return;
     }
-  </script>
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    outputBox.value = ""; // clear placeholder
+
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      if (value) {
+        const chunk = decoder.decode(value, { stream: true });
+        outputBox.value += chunk;
+        outputBox.scrollTop = outputBox.scrollHeight; // auto scroll
+      }
+      done = readerDone;
+    }
+  }
+
+  function paraphraseText() {
+    processText("paraphrase");
+  }
+
+  function summarizeText() {
+    processText("summarize");
+  }
+</script>
+
 </body>
 </html>
+
