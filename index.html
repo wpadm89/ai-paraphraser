@@ -3,98 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Intextify | Free AI Paraphraser & Summarizer</title>
-  <meta name="description" content="Intextify is a free AI-powered tool to paraphrase and summarize text instantly. Perfect for students, bloggers, and professionals.">
-  <meta name="keywords" content="Intextify, AI paraphraser, free summarizer, rewrite text online, text simplifier, essay rewriter, online AI tool">
+  <title>Intextify - Free AI Paraphraser & Summarizer</title>
+  <meta name="description" content="Intextify is a free AI-powered tool to paraphrase and summarize text instantly. Transform your writing with clarity and simplicity.">
+  <meta name="keywords" content="Intextify, AI paraphraser, AI summarizer, free paraphrasing tool, text rewriting, essay rewriter, simplify text, writing assistant">
   <meta name="author" content="Intextify">
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-  <!-- Open Graph (for WhatsApp/Facebook/LinkedIn) -->
+  <!-- Social Sharing Preview -->
   <meta property="og:title" content="Intextify - Free AI Paraphraser & Summarizer">
   <meta property="og:description" content="Transform your words with AI. Paraphrase & Summarize text instantly, free and simple.">
   <meta property="og:image" content="banner.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ai-paraphraser-sigma.vercel.app">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Intextify - Free AI Paraphraser & Summarizer">
   <meta name="twitter:description" content="Transform your words with AI. Paraphrase & Summarize text instantly, free and simple.">
   <meta name="twitter:image" content="banner.png">
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTMXVQ4QKE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XTMXVQ4QKE');
+  </script>
+
   <style>
-    body { font-family: Arial, sans-serif; max-width: 750px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #333; background: #fdfdfd; }
-    h1 { color: #0070f3; text-align: center; font-size: 32px; margin-bottom: 10px; }
-    h2 { margin-top: 40px; color: #0051a1; }
-    textarea { width: 100%; height: 150px; padding: 12px; font-size: 16px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; }
-    button { padding: 10px 20px; margin-right: 10px; cursor: pointer; border: none; background: #0070f3; color: white; border-radius: 6px; font-size: 15px; }
-    button:hover { background: #0051a1; }
-    #output { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background: #f9f9f9; min-height: 100px; }
-    p { margin-bottom: 15px; }
-    footer { margin-top: 50px; text-align: center; font-size: 14px; color: #666; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9fb;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      padding: 20px;
+    }
+    header img {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 2.2em;
+      margin: 10px 0;
+      color: #2a2a2a;
+    }
+    p.tagline {
+      font-size: 1.2em;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background: #4A90E2;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      margin: 5px;
+    }
+    button:hover {
+      background: #357ABD;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
   </style>
 </head>
 <body>
-  <!-- Logo -->
-  <div style="text-align:center;">
-    <img src="logo.png" alt="Intextify Logo" width="100" style="margin-bottom:10px;">
+  <header>
+    <img src="logo.png" alt="Intextify Logo">
+    <h1>Intextify</h1>
+    <p class="tagline">Free AI Paraphraser & Summarizer</p>
+  </header>
+
+  <div class="container">
+    <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+    <br>
+    <button onclick="paraphraseText()">Paraphrase</button>
+    <button onclick="summarizeText()">Summarize</button>
+    <br>
+    <textarea id="outputText" placeholder="Your result will appear here..." readonly></textarea>
   </div>
 
-  <h1>Intextify</h1>
-  <p style="text-align:center; font-size:18px;">
-    Transform your words with AI – <b>Paraphrase</b> & <b>Summarize</b> text instantly.
-  </p>
-
-  <textarea id="inputText" placeholder="Paste your text here..."></textarea>
-  <br>
-  <button onclick="processText('paraphrase')">Paraphrase</button>
-  <button onclick="processText('summarize')">Summarize</button>
-  <div id="output">Here is your result...</div>
-
-  <h2>About Intextify</h2>
-  <p>
-    <b>Intextify</b> is your smart AI writing assistant. It’s the fastest and simplest 
-    <strong>free AI paraphraser</strong> and <strong>summarizer tool</strong> online. 
-    Perfect for rewriting essays, simplifying articles, and summarizing reports instantly with AI.
-  </p>
-
-  <h2>Frequently Asked Questions</h2>
-  <p><b>Is Intextify free?</b> Yes, you can use it for free with no signup required.</p>
-  <p><b>Who can use Intextify?</b> Students, bloggers, professionals, and freelancers.</p>
-  <p><b>Can it handle long essays?</b> Yes, just paste your text and click Summarize.</p>
-  <p><b>Does it support all languages?</b> Currently optimized for English, with more languages coming soon.</p>
-
   <footer>
-    © 2025 Intextify – Smart AI tools for better writing.
+    <p>© 2025 Intextify. All rights reserved.</p>
   </footer>
 
   <script>
-    async function processText(mode) {
+    async function paraphraseText() {
       const input = document.getElementById("inputText").value;
       if (!input.trim()) {
-        alert("Please enter some text first!");
+        alert("Please enter some text.");
         return;
       }
+      document.getElementById("outputText").value = "⏳ Paraphrasing...";
+      const response = await fetch("https://api-inference.huggingface.co/models/Vamsi/T5_Paraphrase_Paws", {
+        method: "POST",
+        headers: { "Authorization": "Bearer YOUR_HUGGINGFACE_API_KEY" },
+        body: JSON.stringify({ inputs: input })
+      });
+      const data = await response.json();
+      document.getElementById("outputText").value = data[0]?.generated_text || "Error: Unable to paraphrase.";
+    }
 
-      document.getElementById("output").innerText = "⏳ Processing...";
-
-      try {
-        const response = await fetch("/api/ai", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: input, mode }),
-        });
-
-        const data = await response.json();
-        document.getElementById("output").innerText = data.result || "⚠️ No response";
-      } catch (error) {
-        document.getElementById("output").innerText = "❌ Error connecting to AI.";
+    async function summarizeText() {
+      const input = document.getElementById("inputText").value;
+      if (!input.trim()) {
+        alert("Please enter some text.");
+        return;
       }
+      document.getElementById("outputText").value = "⏳ Summarizing...";
+      const response = await fetch("https://api-inference.huggingface.co/models/facebook/bart-large-cnn", {
+        method: "POST",
+        headers: { "Authorization": "Bearer YOUR_HUGGINGFACE_API_KEY" },
+        body: JSON.stringify({ inputs: input })
+      });
+      const data = await response.json();
+      document.getElementById("outputText").value = data[0]?.summary_text || "Error: Unable to summarize.";
     }
   </script>
 </body>
 </html>
-
