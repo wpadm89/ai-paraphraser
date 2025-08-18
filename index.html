@@ -21,23 +21,30 @@
   <div id="output">Output will appear here...</div>
 
   <script>
-    async function processText(mode) {
-      const input = document.getElementById("inputText").value;
-      if (!input.trim()) {
-        alert("Please enter some text first!");
-        return;
-      }
-
-      // Placeholder logic (we’ll replace with AI later)
-      let result = "";
-      if (mode === "paraphrase") {
-        result = "🔄 Paraphrased: " + input.split(" ").reverse().join(" "); 
-      } else {
-        result = "📌 Summary: " + input.substring(0, 50) + "...";
-      }
-
-      document.getElementById("output").innerText = result;
+  async function processText(mode) {
+    const input = document.getElementById("inputText").value;
+    if (!input.trim()) {
+      alert("Please enter some text first!");
+      return;
     }
-  </script>
+
+    document.getElementById("output").innerText = "⏳ Processing...";
+
+    try {
+      const response = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: input, mode }),
+      });
+
+      const data = await response.json();
+      document.getElementById("output").innerText = data.result || "⚠️ No response";
+    } catch (error) {
+      document.getElementById("output").innerText = "❌ Error connecting to AI.";
+    }
+  }
+</script>
+
 </body>
 </html>
+
