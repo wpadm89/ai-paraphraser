@@ -116,53 +116,40 @@
     <p>© 2025 Intextify. All rights reserved.</p>
   </footer>
 
-  <!-- Updated script to use streaming -->
   <script>
-    async function processText(mode) {
+    async function sendRequest(mode) {
       const input = document.getElementById("inputText").value;
-      const outputBox = document.getElementById("outputText");
       if (!input.trim()) {
         alert("Please enter some text.");
         return;
       }
 
-      outputBox.value = mode === "paraphrase" ? "⏳ Paraphrasing..." : "⏳ Summarizing...";
+      document.getElementById("outputText").value =
+        mode === "paraphrase" ? "⏳ Paraphrasing..." : "⏳ Summarizing...";
 
-      const response = await fetch("/api/ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input, mode }),
-      });
+      try {
+        const response = await fetch("/api/ai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: input, mode }),
+        });
 
-      if (!response.body) {
-        outputBox.value = "⚠️ No response received!";
-        return;
-      }
+        const data = await response.json();
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let done = false;
-      outputBox.value = "";
-
-      while (!done) {
-        const { value, done: readerDone } = await reader.read();
-        if (value) {
-          const chunk = decoder.decode(value, { stream: true });
-          outputBox.value += chunk;
-          outputBox.scrollTop = outputBox.scrollHeight;
-        }
-        done = readerDone;
+        // ✅ Show only the clean AI result (not raw JSON)
+        document.getElementById("outputText").value = data.result || "⚠️ Error: No result.";
+      } catch (err) {
+        document.getElementById("outputText").value = "⚠️ Error: Something went wrong.";
       }
     }
 
     function paraphraseText() {
-      processText("paraphrase");
+      sendRequest("paraphrase");
     }
 
     function summarizeText() {
-      processText("summarize");
+      sendRequest("summarize");
     }
   </script>
 </body>
 </html>
-
