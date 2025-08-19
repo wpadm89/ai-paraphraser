@@ -3,204 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intextify - AI Tools</title>
+  <title>Intextify - Free AI Tools (Paraphraser, Summarizer, Citations)</title>
+  <meta name="description" content="Intextify offers free AI-powered tools for paraphrasing, summarizing, and generating citations instantly. Simple, fast, and accurate." />
+  <link rel="canonical" href="https://www.intextify.com/" />
+
+  <!-- Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
+  <!-- Social Sharing Preview -->
+  <meta property="og:title" content="Intextify - Free AI Tools" />
+  <meta property="og:description" content="Paraphrase, Summarize, and Generate Citations instantly with AI." />
+  <meta property="og:image" content="banner.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.intextify.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Intextify - Free AI Tools" />
+  <meta name="twitter:description" content="Paraphrase, Summarize, and Generate Citations instantly with AI." />
+  <meta name="twitter:image" content="banner.png" />
+  <meta name="twitter:domain" content="intextify.com" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTMXVQ4QKE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-XTMXVQ4QKE");
+  </script>
+
   <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#f9f9fb; color:#333; text-align:center; }
-    header { padding:20px; }
-    .logo { width: clamp(120px, 18vw, 280px); height:auto; display:block; margin:0 auto; }
-    h1 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin: 10px 0 4px; }
-    p.tagline { font-size: clamp(1rem, 1.6vw, 1.2rem); color:#555; margin:0 0 18px; }
-    .container { max-width: 720px; margin:0 auto; padding:16px; }
-    textarea { width:100%; min-height:120px; padding:12px; border:1px solid #ccc; border-radius:8px; resize:vertical; font-size:1rem; margin:10px 0; }
-    button { background:#4A90E2; color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; margin:6px; font-size:1rem; }
-    button:hover { background:#357ABD; }
-    .hidden { display:none; }
-    .profile-form input { padding:8px; margin:5px 0; width:90%; border:1px solid #ccc; border-radius:6px; font-size:1rem; }
-    footer { margin-top:40px; padding:20px; font-size:.9rem; color:#777; }
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #f9f9fb;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      padding: 20px;
+    }
+    header img {
+      max-width: 180px;
+      height: auto;
+    }
+    @media (min-width: 768px) {
+      header img {
+        max-width: 280px; /* Larger on desktop */
+      }
+    }
+    h1 {
+      font-size: clamp(1.5rem, 2vw, 2.5rem);
+      margin: 10px 0;
+      color: #2a2a2a;
+    }
+    p.tagline {
+      font-size: 1.2em;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      resize: vertical;
+    }
+    button {
+      background: #4A90E2;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      margin: 5px;
+    }
+    button:hover {
+      background: #357ABD;
+    }
+    .output-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: left;
+      min-height: 100px;
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 10px 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+    .loading {
+      color: #666;
+      font-style: italic;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Intextify Logo" class="logo" />
+    <img src="logo.png" alt="Intextify Logo" />
     <h1>Intextify</h1>
-    <p class="tagline">Free AI Tools: Citations • Paraphrase • Summarize</p>
+    <p class="tagline">Free AI Paraphraser, Summarizer & Citation Generator</p>
   </header>
 
   <div class="container">
-
-    <!-- Auth Section -->
-    <div id="auth-section">
-      <h2>Login / Signup</h2>
-      <input type="email" id="auth-email" placeholder="Email" />
-      <input type="password" id="auth-password" placeholder="Password" />
-      <br>
-      <button onclick="signUp()">Sign Up</button>
-      <button onclick="logIn()">Log In</button>
-    </div>
-
-    <div id="logout-section" class="hidden">
-      <p id="welcome-msg"></p>
-      <button onclick="logOut()">Log Out</button>
-    </div>
-
-    <!-- Profile Section -->
-    <div id="profile-section" class="hidden">
-      <h2>Your Profile</h2>
-      <form class="profile-form" onsubmit="saveProfile(event)">
-        <input type="text" id="profile-name" placeholder="Full Name" /><br>
-        <input type="text" id="profile-phone" placeholder="Phone Number" /><br>
-        <button type="submit">Save Profile</button>
-      </form>
-    </div>
-
-    <!-- Tools Section -->
-    <div id="tools-section" class="hidden">
-      <h2>Citations Tool</h2>
-      <textarea id="citationInput" placeholder="Paste your source text..."></textarea>
-      <button onclick="generateCitation()">Generate Citation</button>
-      <textarea id="citationOutput" placeholder="Citation will appear here..." readonly></textarea>
-
-      <h2>Paraphrase Tool</h2>
-      <textarea id="paraphraseInput" placeholder="Paste text to paraphrase..."></textarea>
-      <button onclick="paraphraseText()">Paraphrase</button>
-      <textarea id="paraphraseOutput" placeholder="Paraphrased text..." readonly></textarea>
-
-      <h2>Summarize Tool</h2>
-      <textarea id="summarizeInput" placeholder="Paste text to summarize..."></textarea>
-      <button onclick="summarizeText()">Summarize</button>
-      <textarea id="summarizeOutput" placeholder="Summary will appear here..." readonly></textarea>
-    </div>
+    <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+    <br />
+    <button onclick="paraphraseText()">Paraphrase</button>
+    <button onclick="summarizeText()">Summarize</button>
+    <button onclick="citationText()">Generate Citation</button>
+    <br />
+    <div id="outputBox" class="output-box">Your result will appear here...</div>
   </div>
 
-  <footer>© 2025 Intextify. All rights reserved.</footer>
+  <footer>
+    <p>© 2025 Intextify. All rights reserved.</p>
+  </footer>
 
-  <!-- Supabase SDK -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
-    const supabase = window.supabase.createClient(
-      "https://mnhoxrhsthtkiusnyaeb.supabase.co",   // replace with your Supabase URL
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uaG94cmhzdGh0a2l1c255YWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MDc1NjcsImV4cCI6MjA3MTE4MzU2N30.sZv5JHjbut-tdTmZBNNtN57eePigwLfom9dqnaPv6Ho"                      // replace with your anon key
-    );
+    async function streamAI(input, mode) {
+      const outputEl = document.getElementById("outputBox");
+      outputEl.textContent = "⏳ Generating...";
+      outputEl.classList.add("loading");
 
-    let currentUser = null;
-
-    // --- Realtime subscription for profile changes ---
-    function subscribeToProfileChanges(userId) {
-      supabase
-        .channel("profile-changes-" + userId)
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "profiles",
-            filter: `id=eq.${userId}`
-          },
-          (payload) => {
-            console.log("Realtime profile update:", payload);
-            const profile = payload.new;
-            if (profile) {
-              document.getElementById("profile-name").value = profile.name || "";
-              document.getElementById("profile-phone").value = profile.phone || "";
-              alert("🔄 Profile updated in another session!");
-            }
-          }
-        )
-        .subscribe();
-    }
-
-    async function signUp() {
-      const email = document.getElementById("auth-email").value;
-      const password = document.getElementById("auth-password").value;
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) alert(error.message);
-      else alert("Signup successful! Please log in.");
-    }
-
-    async function logIn() {
-      const email = document.getElementById("auth-email").value;
-      const password = document.getElementById("auth-password").value;
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) alert(error.message);
-      else {
-        currentUser = data.user;
-        afterLogin();
-        // subscribe to realtime updates
-        subscribeToProfileChanges(currentUser.id);
-      }
-    }
-
-    async function logOut() {
-      await supabase.auth.signOut();
-      currentUser = null;
-      document.getElementById("auth-section").classList.remove("hidden");
-      document.getElementById("logout-section").classList.add("hidden");
-      document.getElementById("profile-section").classList.add("hidden");
-      document.getElementById("tools-section").classList.add("hidden");
-    }
-
-    function afterLogin() {
-      document.getElementById("auth-section").classList.add("hidden");
-      document.getElementById("logout-section").classList.remove("hidden");
-      document.getElementById("profile-section").classList.remove("hidden");
-      document.getElementById("tools-section").classList.remove("hidden");
-      document.getElementById("welcome-msg").innerText = "Welcome " + currentUser.email;
-      loadProfile();
-    }
-
-    async function saveProfile(event) {
-      event.preventDefault();
-      if (!currentUser) return;
-      const name = document.getElementById("profile-name").value;
-      const phone = document.getElementById("profile-phone").value;
-
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-
-      const res = await fetch("/api/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // ✅ secure
-        },
-        body: JSON.stringify({ name, phone }) // ❌ no userId passed
-      });
-
-      const json = await res.json();
-      if (json.error) alert("❌ " + json.error);
-      else alert("✅ Profile saved!");
-    }
-
-    async function loadProfile() {
-      if (!currentUser) return;
-
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-
-      const res = await fetch("/api/profile", {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}` // ✅ secure
-        }
-      });
-
-      const json = await res.json();
-      if (json.error) {
-        console.error("Error loading profile:", json.error);
-        return;
-      }
-      if (json.profile) {
-        document.getElementById("profile-name").value = json.profile.name || "";
-        document.getElementById("profile-phone").value = json.profile.phone || "";
-      }
-    }
-
-    // --- Streaming AI Fetch ---
-    async function streamAI(input, mode, outputElementId) {
-      const outputEl = document.getElementById(outputElementId);
-      outputEl.value = "⏳ Generating...\n";
       const response = await fetch("/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -210,6 +151,7 @@
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let buffer = "";
+      let textSoFar = "";
 
       while (true) {
         const { done, value } = await reader.read();
@@ -220,41 +162,42 @@
         buffer = parts.pop();
 
         for (const part of parts) {
-          if (part.includes("[DONE]")) return;
+          if (part.includes("[DONE]")) {
+            outputEl.classList.remove("loading");
+            return;
+          }
           if (part.startsWith("data:")) {
-            const data = part.replace("data:", "").trim();
-            if (data.startsWith("ERROR:")) {
-              outputEl.value = "❌ " + data;
-              return;
+            const token = part.replace("data:", "").trim();
+
+            // Add spacing if tokens arrive glued
+            if (textSoFar && !textSoFar.endsWith(" ") && /^[a-zA-Z0-9]/.test(token)) {
+              textSoFar += " ";
             }
-            outputEl.value += data;
+
+            textSoFar += token;
+            outputEl.textContent = textSoFar;
           }
         }
       }
     }
 
-    // Tool functions
-    function generateCitation() {
-      const input = document.getElementById("citationInput").value;
-      streamAI(input, "citation", "citationOutput");
-    }
     function paraphraseText() {
-      const input = document.getElementById("paraphraseInput").value;
-      streamAI(input, "paraphrase", "paraphraseOutput");
-    }
-    function summarizeText() {
-      const input = document.getElementById("summarizeInput").value;
-      streamAI(input, "summarize", "summarizeOutput");
+      const input = document.getElementById("inputText").value;
+      if (!input.trim()) return alert("Please enter text first.");
+      streamAI(input, "paraphrase");
     }
 
-    // Auto check auth on load
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
-        currentUser = data.user;
-        afterLogin();
-        subscribeToProfileChanges(currentUser.id);
-      }
-    });
+    function summarizeText() {
+      const input = document.getElementById("inputText").value;
+      if (!input.trim()) return alert("Please enter text first.");
+      streamAI(input, "summarize");
+    }
+
+    function citationText() {
+      const input = document.getElementById("inputText").value;
+      if (!input.trim()) return alert("Please enter text first.");
+      streamAI(input, "citation");
+    }
   </script>
 </body>
 </html>
