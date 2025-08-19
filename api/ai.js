@@ -1,5 +1,4 @@
 // pages/api/ai.js
-import { callOpenAI } from "../../lib/aiClient";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -24,18 +23,72 @@ export default async function handler(req, res) {
 
   try {
     if (stream) {
+      // Prepare SSE headers
       res.setHeader("Content-Type", "text/event-stream");
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
-      const generator = await callOpenAI(prompt, "gpt-4o-mini", true);
-      for await (const chunk of generator) {
-        res.write(`data: ${chunk}\n\n`);
+      // Call OpenAI with streaming enabled
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
+          stream: true,
+        }),
+      });
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith("data:")) continue;
+
+          if (trimmed === "data: [DONE]") {
+            res.write("data: [DONE]\n\n");
+            res.end();
+            return;
+          }
+
+          try {
+            const json = JSON.parse(trimmed.replace("data: ", ""));
+            const token = json.choices?.[0]?.delta?.content;
+            if (token) {
+              res.write(`data: ${token}\n\n`);
+            }
+          } catch (err) {
+            console.error("Stream JSON parse error:", err);
+          }
+        }
       }
-      res.write("data: [DONE]\n\n");
-      res.end();
     } else {
-      const result = await callOpenAI(prompt);
+      // Non-streaming fallback
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+
+      const data = await response.json();
+      const result = data.choices?.[0]?.message?.content ?? "No response.";
       res.status(200).json({ result });
     }
   } catch (error) {
