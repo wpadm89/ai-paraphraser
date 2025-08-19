@@ -34,6 +34,59 @@
             margin: 0;
         }
         
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        .page-title {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.1));
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .page-title p {
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+        
         .container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -41,33 +94,6 @@
             background: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: var(--border-radius);
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-        
-        .logo i {
-            color: var(--accent);
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
         }
         
         h2 {
@@ -114,6 +140,8 @@
             padding: 2rem;
             color: var(--gray);
             font-size: 0.9rem;
+            background: var(--dark);
+            color: white;
         }
         
         .nav-buttons {
@@ -156,7 +184,7 @@
                 margin: 1rem;
             }
             
-            h1 {
+            .page-title h1 {
                 font-size: 2rem;
             }
             
@@ -177,16 +205,21 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
+        <div class="nav-container">
             <div class="logo">
                 <i class="fas fa-quote-right"></i>
                 <span>InTextify</span>
             </div>
-            <h1>Terms of Service</h1>
-            <p class="last-updated">Last Updated: January 15, 2024</p>
         </div>
     </header>
+    
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1>Terms of Service</h1>
+        <p>Last Updated: January 15, 2024</p>
+    </div>
     
     <div class="container">
         <p>Welcome to InTextify! These Terms of Service ("Terms") govern your use of our website located at www.intextify.com ("Website") and our citation generation services ("Services"). Please read these Terms carefully before using our Services.</p>
