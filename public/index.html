@@ -1,1311 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InTextify - Smart Text Citations</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4caf50;
-            --warning: #ff9800;
-            --danger: #f44336;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --border-radius: 8px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background-color: #f5f7ff;
-            overflow-x: hidden;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo i {
-            color: var(--accent);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: var(--transition);
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .auth-button {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-
-        .signup-btn {
-            background: var(--accent);
-            color: white;
-        }
-
-        .signup-btn:hover {
-            background: #3ab0d9;
-        }
-
-        .login-btn {
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-        }
-
-        .login-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .hero {
-            padding: 5rem 0;
-            background: linear-gradient(rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.1)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234361ee" opacity="0.05"/><path d="M0 50L100 50M50 0L50 100" stroke="%237209b7" stroke-width="1" stroke-opacity="0.1"/></svg>');
-            background-size: cover;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--gray);
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.6);
-        }
-
-        .features {
-            padding: 5rem 0;
-            background-color: white;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--dark);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border-radius: 2px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            text-align: center;
-            border: 1px solid var(--light-gray);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            color: white;
-            font-size: 1.8rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-dark);
-        }
-
-        .citation-tool {
-            padding: 5rem 0;
-            background-color: var(--light);
-        }
-
-        .tool-container {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .tool-header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .tool-header h2 {
-            font-size: 1.8rem;
-        }
-
-        .controls {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .style-select, .generate-btn {
-            padding: 0.7rem 1.2rem;
-            border-radius: var(--border-radius);
-            border: none;
-            font-family: inherit;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .style-select {
-            background: white;
-            color: var(--dark);
-            border: 1px solid var(--light-gray);
-            min-width: 150px;
-        }
-
-        .generate-btn {
-            background: var(--accent);
-            color: white;
-            transition: var(--transition);
-        }
-
-        .generate-btn:hover {
-            background: #3ab0d9;
-        }
-
-        .tool-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .tool-body {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .input-section, .output-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .input-section h3, .output-section h3 {
-            font-size: 1.3rem;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .input-text {
-            width: 100%;
-            height: 250px;
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--light-gray);
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            resize: vertical;
-            transition: var(--transition);
-        }
-
-        .input-text:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .example-text {
-            font-size: 0.9rem;
-            color: var(--gray);
-            background: var(--light-gray);
-            padding: 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .example-text:hover {
-            background: #dde0e4;
-        }
-
-        .output-area {
-            background: var(--light);
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            height: 250px;
-            overflow-y: auto;
-            border: 1px solid var(--light-gray);
-            font-family: 'Roboto', sans-serif;
-            white-space: pre-wrap;
-        }
-
-        .security-section {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f5f7ff 0%, #e6eeff 100%);
-            text-align: center;
-        }
-
-        .security-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 3rem auto 0;
-        }
-
-        .security-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .security-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .security-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .testimonials {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: var(--light);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 5rem;
-            color: rgba(67, 97, 238, 0.1);
-            font-family: serif;
-            line-height: 1;
-        }
-
-        .testimonial-content {
-            margin: 1rem 0;
-            font-style: italic;
-            color: var(--gray);
-            position: relative;
-            z-index: 1;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .author-info h4 {
-            color: var(--primary-dark);
-        }
-
-        .author-info p {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--accent);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #495057;
-            color: white;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .social-links a:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 3rem;
-            color: #adb5bd;
-            font-size: 0.9rem;
-            border-top: 1px solid #495057;
-            margin-top: 3rem;
-        }
-
-        /* Mobile menu */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            
-            nav ul {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                flex-direction: column;
-                background: linear-gradient(135deg, var(--primary), var(--secondary));
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                padding: 2rem 0;
-                gap: 2rem;
-            }
-            
-            nav ul.active {
-                left: 0;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .auth-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-                width: 100%;
-            }
-            
-            .auth-button {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        /* Demo video */
-        .demo-video {
-            max-width: 800px;
-            margin: 3rem auto 0;
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-        }
-
-        .demo-video iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* How it works section */
-        .how-it-works {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f5f7ff 0%, #e6eeff 100%);
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 3rem auto;
-            gap: 2rem;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .step-number {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .step h3 {
-            margin: 1rem 0;
-            color: var(--primary-dark);
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            animation: modalopen 0.4s;
-        }
-
-        @keyframes modalopen {
-            from {opacity: 0; transform: translateY(-60px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            right: 1rem;
-            top: 0.5rem;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: var(--dark);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-family: inherit;
-            font-size: 1rem;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: white;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intextify - AI Tools</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f9f9fb; color:#333; text-align:center; }
+    header { padding:20px; }
+    .logo { width: clamp(120px, 18vw, 280px); height:auto; display:block; margin:0 auto; }
+    h1 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin: 10px 0 4px; }
+    p.tagline { font-size: clamp(1rem, 1.6vw, 1.2rem); color:#555; margin:0 0 18px; }
+    .container { max-width: 720px; margin:0 auto; padding:16px; }
+    textarea { width:100%; min-height:120px; padding:12px; border:1px solid #ccc; border-radius:8px; resize:vertical; font-size:1rem; margin:10px 0; }
+    button { background:#4A90E2; color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; margin:6px; font-size:1rem; }
+    button:hover { background:#357ABD; }
+    .hidden { display:none; }
+    .profile-form input { padding:8px; margin:5px 0; width:90%; border:1px solid #ccc; border-radius:6px; font-size:1rem; }
+    footer { margin-top:40px; padding:20px; font-size:.9rem; color:#777; }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-quote-right"></i>
-                <span>InTextify</span>
-            </div>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <nav>
-                <ul id="navMenu">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#tool">Citation Tool</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#security">Security</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <div class="auth-buttons" id="authButtons">
-                        <button class="auth-button login-btn" id="loginBtn">Log In</button>
-                        <button class="auth-button signup-btn" id="signupBtn">Sign Up</button>
-                    </div>
-                    <div class="user-menu" id="userMenu" style="display: none;">
-                        <div class="user-avatar" id="userAvatar">U</div>
-                        <span id="userName">User</span>
-                        <button class="auth-button login-btn" id="logoutBtn">Log Out</button>
-                    </div>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <header>
+    <img src="logo.png" alt="Intextify Logo" class="logo" />
+    <h1>Intextify</h1>
+    <p class="tagline">Free AI Tools: Citations • Paraphrase • Summarize</p>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Smart Text Citations Made Simple</h1>
-            <p>Generate accurate in-text citations and references in seconds. Perfect for students, researchers, and writers who value precision and efficiency.</p>
-            <a href="#tool" class="cta-button">Generate Citations Now</a>
-        </div>
-    </section>
+  <div class="container">
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose InTextify</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Lightning Fast</h3>
-                    <p>Generate citations in seconds, not hours. Our AI-powered engine processes text instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h3>Multiple Formats</h3>
-                    <p>Supports APA, MLA, Chicago, IEEE, and more. Switch between styles with one click.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Secure & Private</h3>
-                    <p>Your content is never stored. We prioritize your privacy and data security.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Academic Integrity</h3>
-                    <p>Ensure proper attribution and avoid plagiarism with accurate citations.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Citation Tool -->
-    <section class="citation-tool" id="tool">
-        <div class="container">
-            <h2 class="section-title">Citation Generator</h2>
-            <div class="tool-container">
-                <div class="tool-header">
-                    <h2><i class="fas fa-magic"></i> Generate Citations</h2>
-                    <div class="controls">
-                        <select class="style-select" id="citationStyle">
-                            <option value="apa">APA Style</option>
-                            <option value="mla">MLA Style</option>
-                            <option value="chicago">Chicago Style</option>
-                            <option value="ieee">IEEE Style</option>
-                            <option value="harvard">Harvard Style</option>
-                        </select>
-                        <button class="generate-btn cta-button" id="generateBtn">
-                            <i class="fas fa-play"></i> Generate
-                        </button>
-                    </div>
-                </div>
-                <div class="tool-body">
-                    <div class="input-section">
-                        <h3><i class="fas fa-edit"></i> Input Text</h3>
-                        <textarea class="input-text" id="inputText" placeholder="Paste your text here..."></textarea>
-                        <div class="example-text" id="exampleText">
-                            <i class="fas fa-lightbulb"></i> Example: According to Johnson (2020), climate change impacts are accelerating...
-                        </div>
-                    </div>
-                    <div class="output-section">
-                        <h3><i class="fas fa-file-contract"></i> Generated Citations</h3>
-                        <div class="output-area" id="outputArea">Your formatted citations will appear here...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <i class="fas fa-paste fa-2x" style="color: var(--primary);"></i>
-                    <h3>Paste Your Text</h3>
-                    <p>Copy and paste the text you want to cite directly into our tool</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <i class="fas fa-cog fa-2x" style="color: var(--primary);"></i>
-                    <h3>Choose Citation Style</h3>
-                    <p>Select your preferred citation format from our supported styles</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <i class="fas fa-sync-alt fa-2x" style="color: var(--primary);"></i>
-                    <h3>Generate & Refine</h3>
-                    <p>Let our AI process your text and generate perfectly formatted citations</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Video -->
-    <section class="citation-tool">
-        <div class="container">
-            <h2 class="section-title">See It In Action</h2>
-            <div class="demo-video">
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="InTextify Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- Security Section -->
-    <section class="security-section" id="security">
-        <div class="container">
-            <h2 class="section-title">Your Security Matters</h2>
-            <div class="security-grid">
-                <div class="security-card">
-                    <div class="security-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h3>Data Encryption</h3>
-                    <p>All data is encrypted in transit using TLS 1.3 protocols</p>
-                </div>
-                <div class="security-card">
-                    <div class="security-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>No Data Storage</h3>
-                    <p>Your content is processed in real-time and never stored on our servers</p>
-                </div>
-                <div class="security-card">
-                    <div class="security-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3>Privacy First</h3>
-                    <p>We don't sell your data or use it for advertising purposes</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <h2 class="section-title">What Our Users Say</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        InTextify saved me hours on my research paper. The citations were perfect and my professor was impressed with the formatting accuracy.
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SJ</div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Graduate Student, Stanford</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        As a researcher, I need to cite dozens of sources daily. InTextify's accuracy and speed have made it an indispensable tool in my workflow.
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MR</div>
-                        <div class="author-info">
-                            <h4>Michael Rodriguez</h4>
-                            <p>Research Scientist, MIT</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        I was skeptical at first, but after trying InTextify I'm amazed. It handles complex sources better than any other tool I've tried.
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">EP</div>
-                        <div class="author-info">
-                            <h4>Emily Parker</h4>
-                            <p>Author & Journalist</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h3>InTextify</h3>
-                    <p>Smart citations for students, researchers, and writers. Save time and ensure academic integrity.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#features"><i class="fas fa-arrow-right"></i> Features</a></li>
-                        <li><a href="#tool"><i class="fas fa-arrow-right"></i> Citation Tool</a></li>
-                        <li><a href="#how-it-works"><i class="fas fa-arrow-right"></i> How It Works</a></li>
-                        <li><a href="#security"><i class="fas fa-arrow-right"></i> Security</a></li>
-                        <li><a href="#testimonials"><i class="fas fa-arrow-right"></i> Testimonials</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> APA Style Guide</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> MLA Handbook</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Citation Blog</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Academic Resources</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-envelope"></i> support@intextify.com</a></li>
-                        <li><a href="#"><i class="fas fa-phone"></i> +92 304 9529089</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Chakwal, Pakistan</a></li>
-                    </ul>
-                    <div class="footer-links">
-                        <li><a href="privacy-policy.html"><i class="fas fa-lock"></i> Privacy Policy</a></li>
-                        <li><a href="terms-of-service.html"><i class="fas fa-file-alt"></i> Terms of Service</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2023 InTextify. All rights reserved. Designed with ❤️ for researchers and writers.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Registration Modal -->
-    <div id="registrationModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Create an Account</h2>
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" class="form-control" required>
-                </div>
-                <button type="submit" class="cta-button">Create Account</button>
-            </form>
-        </div>
+    <!-- Auth Section -->
+    <div id="auth-section">
+      <h2>Login / Signup</h2>
+      <input type="email" id="auth-email" placeholder="Email" />
+      <input type="password" id="auth-password" placeholder="Password" />
+      <br>
+      <button onclick="signUp()">Sign Up</button>
+      <button onclick="logIn()">Log In</button>
     </div>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Log In to Your Account</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" class="form-control" required>
-                </div>
-                <button type="submit" class="cta-button">Log In</button>
-            </form>
-        </div>
+    <div id="logout-section" class="hidden">
+      <p id="welcome-msg"></p>
+      <button onclick="logOut()">Log Out</button>
     </div>
 
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
-        
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-        
-        // Example text insertion
-        const exampleText = document.getElementById('exampleText');
-        const inputText = document.getElementById('inputText');
-        
-        exampleText.addEventListener('click', () => {
-            inputText.value = "According to recent studies (Johnson, 2020; Smith et al., 2022), climate change impacts are accelerating at an unprecedented rate. Research by Chen and Martinez (2021) demonstrates a 35% increase in extreme weather events compared to the previous decade. As noted by the Intergovernmental Panel on Climate Change (IPCC, 2023), 'immediate and unprecedented action is required to mitigate catastrophic consequences.'";
-        });
-        
-        // Generate citations
-        const generateBtn = document.getElementById('generateBtn');
-        const outputArea = document.getElementById('outputArea');
-        const citationStyle = document.getElementById('citationStyle');
-        
-        generateBtn.addEventListener('click', () => {
-            const text = inputText.value.trim();
-            if (!text) {
-                outputArea.textContent = "Please enter some text to generate citations.";
-                return;
-            }
-            
-            // Show loading state
-            outputArea.innerHTML = '<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Generating citations...</div>';
-            
-            // Simulate processing delay
-            setTimeout(() => {
-                const style = citationStyle.value;
-                let citations;
-                
-                switch(style) {
-                    case 'apa':
-                        citations = `Johnson, A. (2020). Climate Change Acceleration. Environmental Science Journal, 45(3), 234-250.\n\nSmith, B., Davis, C., & Wilson, E. (2022). Extreme Weather Patterns. Nature Climate, 12(1), 45-67.\n\nChen, L., & Martinez, R. (2021). Environmental Impact Studies. Journal of Environmental Research, 33(4), 112-130.`;
-                        break;
-                    case 'mla':
-                        citations = `Johnson, Alice. "Climate Change Acceleration." Environmental Science Journal, vol. 45, no. 3, 2020, pp. 234-250.\n\nSmith, Brian, et al. "Extreme Weather Patterns." Nature Climate, vol. 12, no. 1, 2022, pp. 45-67.\n\nChen, Li, and Roberto Martinez. "Environmental Impact Studies." Journal of Environmental Research, vol. 33, no. 4, 2021, pp. 112-130.`;
-                        break;
-                    case 'chicago':
-                        citations = `Johnson, Alice. 2020. "Climate Change Acceleration." Environmental Science Journal 45 (3): 234-250.\n\nSmith, Brian, Charles Davis, and Emily Wilson. 2022. "Extreme Weather Patterns." Nature Climate 12 (1): 45-67.\n\nChen, Li, and Roberto Martinez. 2021. "Environmental Impact Studies." Journal of Environmental Research 33 (4): 112-130.`;
-                        break;
-                    case 'ieee':
-                        citations = `[1] A. Johnson, "Climate Change Acceleration," Environmental Science Journal, vol. 45, no. 3, pp. 234-250, 2020.\n[2] B. Smith, C. Davis, and E. Wilson, " Extreme Weather Patterns," Nature Climate, vol. 12, no. 1, pp. 45-67, 2022.\n[3] L. Chen and R. Martinez, "Environmental Impact Studies," Journal of Environmental Research, vol. 33, no. 4, pp. 112-130, 2021.`;
-                        break;
-                    case 'harvard':
-                        citations = `Johnson, A. (2020) 'Climate Change Acceleration', Environmental Science Journal, 45(3), pp. 234-250.\n\nSmith, B. et al. (2022) 'Extreme Weather Patterns', Nature Climate, 12(1), pp. 45-67.\n\nChen, L. and Martinez, R. (2021) 'Environmental Impact Studies', Journal of Environmental Research, 33(4), pp. 112-130.`;
-                        break;
-                    default:
-                        citations = "Selected citation style not supported.";
-                }
-                
-                outputArea.textContent = citations;
-            }, 1500);
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    navMenu.classList.remove('active');
-                }
-            });
-        });
+    <!-- Profile Section -->
+    <div id="profile-section" class="hidden">
+      <h2>Your Profile</h2>
+      <form class="profile-form" onsubmit="saveProfile(event)">
+        <input type="text" id="profile-name" placeholder="Full Name" /><br>
+        <input type="text" id="profile-phone" placeholder="Phone Number" /><br>
+        <button type="submit">Save Profile</button>
+      </form>
+    </div>
 
-        // Registration and Login Modals
-        const signupBtn = document.getElementById('signupBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const registrationModal = document.getElementById('registrationModal');
-        const loginModal = document.getElementById('loginModal');
-        const closeButtons = document.querySelectorAll('.close');
-        const registrationForm = document.getElementById('registrationForm');
-        const loginForm = document.getElementById('loginForm');
-        const authButtons = document.getElementById('authButtons');
-        const userMenu = document.getElementById('userMenu');
-        const userAvatar = document.getElementById('userAvatar');
-        const userName = document.getElementById('userName');
-        const logoutBtn = document.getElementById('logoutBtn');
+    <!-- Tools Section -->
+    <div id="tools-section" class="hidden">
+      <h2>Citations Tool</h2>
+      <textarea id="citationInput" placeholder="Paste your source text..."></textarea>
+      <button onclick="generateCitation()">Generate Citation</button>
+      <textarea id="citationOutput" placeholder="Citation will appear here..." readonly></textarea>
 
-        // Check if user is already logged in
-        function checkLoginStatus() {
-            const userData = localStorage.getItem('userData');
-            if (userData) {
-                const user = JSON.parse(userData);
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                userAvatar.textContent = user.name.charAt(0).toUpperCase();
-                userName.textContent = user.name;
-            } else {
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
+      <h2>Paraphrase Tool</h2>
+      <textarea id="paraphraseInput" placeholder="Paste text to paraphrase..."></textarea>
+      <button onclick="paraphraseText()">Paraphrase</button>
+      <textarea id="paraphraseOutput" placeholder="Paraphrased text..." readonly></textarea>
+
+      <h2>Summarize Tool</h2>
+      <textarea id="summarizeInput" placeholder="Paste text to summarize..."></textarea>
+      <button onclick="summarizeText()">Summarize</button>
+      <textarea id="summarizeOutput" placeholder="Summary will appear here..." readonly></textarea>
+    </div>
+  </div>
+
+  <footer>© 2025 Intextify. All rights reserved.</footer>
+
+  <!-- Supabase SDK -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://mnhoxrhsthtkiusnyaeb.supabase.co",   // replace with your Supabase URL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uaG94cmhzdGh0a2l1c255YWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MDc1NjcsImV4cCI6MjA3MTE4MzU2N30.sZv5JHjbut-tdTmZBNNtN57eePigwLfom9dqnaPv6Ho"                      // replace with your anon key
+    );
+
+    let currentUser = null;
+
+    // --- Realtime subscription for profile changes ---
+    function subscribeToProfileChanges(userId) {
+      supabase
+        .channel("profile-changes-" + userId)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "profiles",
+            filter: `id=eq.${userId}`
+          },
+          (payload) => {
+            console.log("Realtime profile update:", payload);
+            const profile = payload.new;
+            if (profile) {
+              document.getElementById("profile-name").value = profile.name || "";
+              document.getElementById("profile-phone").value = profile.phone || "";
+              alert("🔄 Profile updated in another session!");
             }
+          }
+        )
+        .subscribe();
+    }
+
+    async function signUp() {
+      const email = document.getElementById("auth-email").value;
+      const password = document.getElementById("auth-password").value;
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) alert(error.message);
+      else alert("Signup successful! Please log in.");
+    }
+
+    async function logIn() {
+      const email = document.getElementById("auth-email").value;
+      const password = document.getElementById("auth-password").value;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) alert(error.message);
+      else {
+        currentUser = data.user;
+        afterLogin();
+        // subscribe to realtime updates
+        subscribeToProfileChanges(currentUser.id);
+      }
+    }
+
+    async function logOut() {
+      await supabase.auth.signOut();
+      currentUser = null;
+      document.getElementById("auth-section").classList.remove("hidden");
+      document.getElementById("logout-section").classList.add("hidden");
+      document.getElementById("profile-section").classList.add("hidden");
+      document.getElementById("tools-section").classList.add("hidden");
+    }
+
+    function afterLogin() {
+      document.getElementById("auth-section").classList.add("hidden");
+      document.getElementById("logout-section").classList.remove("hidden");
+      document.getElementById("profile-section").classList.remove("hidden");
+      document.getElementById("tools-section").classList.remove("hidden");
+      document.getElementById("welcome-msg").innerText = "Welcome " + currentUser.email;
+      loadProfile();
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById("profile-name").value;
+      const phone = document.getElementById("profile-phone").value;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // ✅ secure
+        },
+        body: JSON.stringify({ name, phone }) // ❌ no userId passed
+      });
+
+      const json = await res.json();
+      if (json.error) alert("❌ " + json.error);
+      else alert("✅ Profile saved!");
+    }
+
+    async function loadProfile() {
+      if (!currentUser) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      const res = await fetch("/api/profile", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}` // ✅ secure
         }
+      });
 
-        // Show modals
-        signupBtn.addEventListener('click', () => {
-            registrationModal.style.display = 'block';
-        });
+      const json = await res.json();
+      if (json.error) {
+        console.error("Error loading profile:", json.error);
+        return;
+      }
+      if (json.profile) {
+        document.getElementById("profile-name").value = json.profile.name || "";
+        document.getElementById("profile-phone").value = json.profile.phone || "";
+      }
+    }
 
-        loginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'block';
-        });
+    // --- Streaming AI Fetch ---
+    async function streamAI(input, mode, outputElementId) {
+      const outputEl = document.getElementById(outputElementId);
+      outputEl.value = "⏳ Generating...\n";
+      const response = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: input, mode, stream: true })
+      });
 
-        // Close modals
-        closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                registrationModal.style.display = 'none';
-                loginModal.style.display = 'none';
-            });
-        });
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
 
-        window.addEventListener('click', (e) => {
-            if (e.target === registrationModal) {
-                registrationModal.style.display = 'none';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop();
+
+        for (const part of parts) {
+          if (part.includes("[DONE]")) return;
+          if (part.startsWith("data:")) {
+            const data = part.replace("data:", "").trim();
+            if (data.startsWith("ERROR:")) {
+              outputEl.value = "❌ " + data;
+              return;
             }
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-        });
+            outputEl.value += data;
+          }
+        }
+      }
+    }
 
-        // Handle registration form submission
-        registrationForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // In a real application, you would send this data to a server
-            // For demonstration, we'll store in localStorage
-            const userData = {
-                name,
-                email,
-                phone,
-                // In a real app, you would hash the password before storing
-                password: btoa(password) // Basic encoding, not secure for production
-            };
-            
-            // Store user data
-            localStorage.setItem('userData', JSON.stringify(userData));
-            
-            alert('Account created successfully!');
-            registrationModal.style.display = 'none';
-            
-            // Update UI to show logged in state
-            checkLoginStatus();
-        });
+    // Tool functions
+    function generateCitation() {
+      const input = document.getElementById("citationInput").value;
+      streamAI(input, "citation", "citationOutput");
+    }
+    function paraphraseText() {
+      const input = document.getElementById("paraphraseInput").value;
+      streamAI(input, "paraphrase", "paraphraseOutput");
+    }
+    function summarizeText() {
+      const input = document.getElementById("summarizeInput").value;
+      streamAI(input, "summarize", "summarizeOutput");
+    }
 
-        // Handle login form submission
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // In a real application, you would verify credentials with a server
-            // For demonstration, we'll check against stored data
-            const storedData = localStorage.getItem('userData');
-            
-            if (storedData) {
-                const userData = JSON.parse(storedData);
-                
-                if (userData.email === email && atob(userData.password) === password) {
-                    alert('Login successful!');
-                    loginModal.style.display = 'none';
-                    
-                    // Update UI to show logged in state
-                    checkLoginStatus();
-                } else {
-                    alert('Invalid email or password!');
-                }
-            } else {
-                alert('No account found with that email!');
-            }
-        });
-
-        // Handle logout
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('userData');
-            checkLoginStatus();
-            alert('You have been logged out.');
-        });
-
-        // Check login status on page load
-        document.addEventListener('DOMContentLoaded', checkLoginStatus);
-    </script>
+    // Auto check auth on load
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        currentUser = data.user;
+        afterLogin();
+        subscribeToProfileChanges(currentUser.id);
+      }
+    });
+  </script>
 </body>
 </html>

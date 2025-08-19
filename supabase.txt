@@ -1,0 +1,5 @@
+Project URL:
+https://mnhoxrhsthtkiusnyaeb.supabase.co
+
+API Key:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uaG94cmhzdGh0a2l1c255YWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MDc1NjcsImV4cCI6MjA3MTE4MzU2N30.sZv5JHjbut-tdTmZBNNtN57eePigwLfom9dqnaPv6Ho
